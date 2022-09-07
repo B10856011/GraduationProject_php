@@ -160,8 +160,8 @@ $pdo = null;
                             <div class="card-body" method="post">
                                 <h5 class="card-title"><?php echo $commodity['com_name'] ?></h5>
                                 <p class="card-text"><?php echo $commodity['introdu'] ?></p>
-                                <!--<a class="btn btn-primary" href="/graduationProject/deleteCom.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>-->
-                                <a class="btn btn-primary" href="/graduationProject/com_info.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>
+                                <!--<a class="btn btn-primary" href="/grdProjectPHP/deleteCom.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>-->
+                                <a class="btn btn-primary" href="/grdProjectPHP/prize_info.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>
                             </div>
                         </div>
                     </div>
@@ -178,7 +178,7 @@ $pdo = null;
                             <span class="page-link"><?php echo $j+1 ?></span>
                         </li>
                         <?php else : ?>
-                        <li class="page-item"><a class="page-link" href="/graduationProject/index.php?page=<?php echo $j ?>"><?php echo $j+1 ?></a></li>
+                        <li class="page-item"><a class="page-link" href="/grdProjectPHP/index.php?page=<?php echo $j ?>"><?php echo $j+1 ?></a></li>
                         <?php endif;?>
                         <?php endfor; ?>
                     </ul>
@@ -191,7 +191,7 @@ $pdo = null;
                         兌換排行榜
                     </a>
                     <?php $i=1; foreach($resumeList as $resume):?>
-                        <a href="com_info.php?id=<?php echo $resume['com_id'];?>" class="list-group-item list-group-item-action">No.<?php echo $i." ".$resume['com_name'];?></a>
+                        <a href="prize_info.php?id=<?php echo $resume['com_id'];?>" class="list-group-item list-group-item-action">No.<?php echo $i." ".$resume['com_name'];?></a>
                     <?php $i++; endforeach;?>
                 </div>
             </div>
