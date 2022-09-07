@@ -8,3 +8,4 @@ apply_reward_form     獎勵申請_填寫表單
 give_reward_form      獎懲介面
 give_reward_consent   獎懲申請書
 student_register      學生註冊
+student_info          學生資訊
