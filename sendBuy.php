@@ -48,8 +48,8 @@ if($student['point']<$commodity['price']){
     header("Location:com_info.php?id={$com_id}&msg=沒有足夠的點數");
 }
 
-try{//產生購買履歷
-    $sql = "INSERT INTO `resume`(`com_id`, `stu_id`) VALUES ({$com_id}, '{$stu_id}');";
+try{//產生待確認表單
+    $sql = "INSERT INTO `confirm`(`com_id`, `stu_id`, `buyNum`) VALUES ({$com_id}, '{$stu_id}', 1);";
     $pdo->query($sql);
     //資料庫商品數量減一
     $newNum = $commodity['com_num']-1;
@@ -66,5 +66,5 @@ try{//產生購買履歷
 $pdo = null;
 
 //var_dump($student);
-header("Location:com_info.php?id={$com_id}");
+header("Location:prize_info.php?id={$com_id}");
 ?>
