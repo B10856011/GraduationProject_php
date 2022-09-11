@@ -83,6 +83,11 @@ $pdo = null;
                         <!-- <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li> -->
+                        <?php if(isset($_SESSION['is_office']) && $_SESSION['is_office'] == true):?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="office/office_info.html">個人資訊(Office)</a>
+                        </li>
+                        <?php else:?>
                         <li class="nav-item">
                             <a class="nav-link" href="apply_reward_consent.html">獎勵申請</a>
                         </li>
@@ -92,9 +97,7 @@ $pdo = null;
                         <li class="nav-item">
                         <a class="nav-link" href="student_info.php">個人資訊(Student)</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="office/office_info.html">個人資訊(Office)</a>
-                        </li>
+                        <?php endif;?>
                         <!-- <li class="nav-item">
                             <a class="nav-link disabled">Disabled</a>
                         </li> -->
