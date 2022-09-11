@@ -39,7 +39,7 @@ if(!empty($user) && $user['password'] == $password){
             echo $e->getMessage();
         }
         $user = $user_array->fetch();
-        if(!empty($user) && $user['password'] == $password){
+        if(!empty($user) && $user['office_pass'] == $password){
             //登入成功
             $_SESSION['is_login'] = true;
             $_SESSION['is_office'] = true;
