@@ -175,7 +175,7 @@ $pdo = null;
             <div class="leftNav">
                 <ul class="jd_menu_vertical" style="margin-left: 0; padding-left:0;">
                     <li><a href="office_info.php"><span class="min-i-arrow"></span>管理員資訊</a></li>
-                    <li><a href="confirm.php"><span class="min-i-arrow"></span>待確認單</a></li>
+                    <li><a href="confirm.php"><span class="min-i-arrow"></span>等待確認</a></li>
                 </ul>
             </div>
         </div>
@@ -183,7 +183,7 @@ $pdo = null;
             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">首頁</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">待確認單</li>
+                    <li class="breadcrumb-item active" aria-current="page">等待確認</li>
                 </ol>
             </nav>
             <!--js輸出table-->
@@ -199,7 +199,7 @@ $pdo = null;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($confirms as $confirm): $i=0;?>
+                        <?php $i=0; foreach($confirms as $confirm):;?>
                         <tr>
                             <td id="stu_id_<?php echo $i;?>"><?php echo $confirm['stu_id'] ?></td>
                             <td id="com_id_<?php echo $i;?>"><?php echo $confirm['com_id'] ?></td>
@@ -223,75 +223,107 @@ $pdo = null;
         var num;
         var Contract;
         var abi = [{
-                        "inputs": [
-                            {
-                                "internalType": "string",
-                                "name": "_stuId",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "_officeId",
-                                "type": "string"
-                            },
-                            {
-                                "internalType": "string",
-                                "name": "_buyTime",
-                                "type": "string"
-                            }
-                        ],
-                        "name": "addTranDetail",
-                        "outputs": [],
-                        "stateMutability": "nonpayable",
-                        "type": "function"
-                    }]
-        var address = "0xa310c9F345dd072f105E00568456Ba7bD2594b88";
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_stuId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_officeId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "_buyTime",
+                        "type": "string"
+                    }
+                ],
+                "name": "addTranDetail",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "blockId",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "string",
+                        "name": "_stuId",
+                        "type": "string"
+                    }
+                ],
+                "name": "getBlock",
+                "outputs": [
+                    {
+                        "internalType": "uint256[]",
+                        "name": "",
+                        "type": "uint256[]"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }]
+        var address = "0x94A705a006117FB894d3E81E230F363436428A5d";
 
         function getNum(i){
-            var num = i;
+            num = i;
             console.log(num);
             init();
         }
 
         async function init() {
             Contract = await new web3.eth.Contract(abi, address);
-            console.log("In_init!!");
+            console.log(Contract);
+            send();
         }
 
         async function send() {
-            console.log("click!!");
-
-            var accounts = await web3.eth.getAccounts();
-            var stu_id = document.getElementById('stu_id_'+i);
-            var office_id = $SESSION['login_id'];
-            //var buyTime = document.getElementById('buyTime'+i);
+            //console.log("click!!");
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            user = accounts[0];
+            //var accounts = await web3.eth.getAccounts().then(console.log);
+            console.log(user);
+            var stu_id = document.getElementById("stu_id_"+ num.toString()).innerHTML;
+            console.log(stu_id);
+            var office_id = "<?php echo $id?>";
+            var buyTime = document.getElementById("buyTime_"+num.toString()).innerHTML;
             Contract.methods.addTranDetail(stu_id, office_id, buyTime).send({
-                from: accounts[0]
+                from: user
             }).then(function(data) {
                 console.log(data);
-            })
+            });
         }
+
         /*
-        async function init() {
-            Contract = await new web3.eth.Contract(abi, address);
-            console.log("In_init!!");
-        }
+            try {
+                web3js = new Web3(window.ethereum); //建立web3連結
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+                user = accounts[0];
+                $("#username").html(user);
 
-        init();
-        async function send() {
-            console.log("click!!");
-
-            var accounts = await web3.eth.getAccounts();
-            var stu_id = <?php echo $confirm['stu_id'] ?>;
-            var office_id = $SESSION['login_id'];
-            var buyTime = <?php echo $confirm['buyTime'] ?>;
-            Contract.methods.addTranDetail(stu_id, office_id, buyTime).send({
-                from: accounts[0]
-            }).then(function(data) {
-                console.log(data);
-            })
-        }
-        document.getElementById('send').addEventListener("click", send);
+                test = new web3js.eth.Contract(abi, testAddress); //合約
+                userAccount = web3js.currentProvider.selectedAddress; //不明用途，取自CrappyBird 893行
+            } catch (error) {
+                alert(error.message);
+            }
         */
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
