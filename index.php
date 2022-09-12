@@ -85,7 +85,10 @@ $pdo = null;
                         </li> -->
                         <?php if(isset($_SESSION['is_office']) && $_SESSION['is_office'] == true):?>
                         <li class="nav-item">
-                            <a class="nav-link" href="office/office_info.html">個人資訊(Office)</a>
+                            <a class="nav-link" href="office_info.php">個人資訊(Office)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="confirm.php">待確認單</a>
                         </li>
                         <?php else:?>
                         <li class="nav-item">
