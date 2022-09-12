@@ -31,24 +31,22 @@ if(!empty($user) && $user['password'] == $password){
     $_SESSION['login_id'] = $user['stu_id'];
     header('Location: index.php');
 }else{
-    if(empty($user)){
-        try{
-            $sql = "SELECT * FROM `office` WHERE `office_id`='{$username}';";
-            $user_array = $pdo->query($sql);
-        }catch (PDOException $e){
-            echo $e->getMessage();
-        }
-        $user = $user_array->fetch();
-        if(!empty($user) && $user['office_pass'] == $password){
-            //登入成功
-            $_SESSION['is_login'] = true;
-            $_SESSION['is_office'] = true;
-            $_SESSION['login_id'] = $user['stu_id'];
-            header('Location: index.php');
-        }
+    try{
+        $sql = "SELECT * FROM `office` WHERE `office_id`='{$username}';";
+        $user_array = $pdo->query($sql);
+    }catch (PDOException $e){
+        echo $e->getMessage();
+    }
+    $user = $user_array->fetch();
+    if(!empty($user) && $user['office_pass'] == $password){
+        //登入成功
+        $_SESSION['is_login'] = true;
+        $_SESSION['is_office'] = true;
+        $_SESSION['login_id'] = $user['office_id'];
+        header('Location: index.php');
     }else{
-        //登入失敗
-        header('Location: login.php?msg=帳號或密碼錯誤');
+    //登入失敗
+    header('Location: login.php?msg=帳號或密碼錯誤');
     }
 }
 
