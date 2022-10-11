@@ -8,13 +8,11 @@ if(isset($_GET['page'])){
     $page = $_GET['page'];
 }
 
+$pdo = null;
 //連線資料庫
-try{
-    $pdo = new PDO('mysql:host=localhost:3307;dbname=graduation_project',"root","466110");
-    //echo "成功連線";
-}catch (PDOException $e){
-    echo $e->getMessage();
-}
+require_once('connectDB.php');
+$pdo = connectDB();
+
 
 try{//取得商品資訊
     $sql = "SELECT * FROM `commodity`;";
