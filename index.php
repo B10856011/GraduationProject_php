@@ -15,13 +15,13 @@ $pdo = connectDB();
 
 
 try{//取得商品資訊
-    $sql = "SELECT * FROM `commodity`;";
+    $sql = "SELECT * FROM `prize`;";
     $commodity_array = $pdo->query($sql);
     $com_count = $commodity_array->rowCount();
     //$page_count = intval($com_count/6);
     $page_count = $com_count/6;
     //取得商品售出數量
-    $sql = "SELECT com_id, com_name, COUNT(stu_id) FROM `resume` NATURAL JOIN `commodity` GROUP BY `com_id` ORDER BY COUNT(stu_id) DESC;";
+    $sql = "SELECT pId, pName, COUNT(sId) FROM `prizelogs` NATURAL JOIN `prize` GROUP BY `pId` ORDER BY COUNT(sId) DESC;";
     $resumeList = $pdo->query($sql);
     $resumeList = $resumeList->fetchall(PDO::FETCH_ASSOC);
 }catch (PDOException $e){
@@ -160,12 +160,12 @@ $pdo = null;
                     <?php if( $page*6 <= $i && $i < ($page+1)*6 ) : ?>
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card" style="width: 18rem;">
-                            <img src="<?php echo $commodity['picture'] ?>" class="card-img-top" alt="...">
+                            <img src="<?php echo $commodity['pictureAddress'] ?>" class="card-img-top" alt="...">
                             <div class="card-body" method="post">
-                                <h5 class="card-title"><?php echo $commodity['com_name'] ?></h5>
-                                <p class="card-text"><?php echo $commodity['introdu'] ?></p>
-                                <!--<a class="btn btn-primary" href="/grdProjectPHP/deleteCom.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>-->
-                                <a class="btn btn-primary" href="/grdProjectPHP/prize_info.php?id=<?php echo $commodity['com_id'] ?>">我要兌換</a>
+                                <h5 class="card-title"><?php echo $commodity['pName'] ?></h5>
+                                <p class="card-text"><?php echo $commodity['content'] ?></p>
+                                <!--<a class="btn btn-primary" href="/grdProjectPHP/deleteCom.php?id=<?php echo $commodity['pId'] ?>">我要兌換</a>-->
+                                <a class="btn btn-primary" href="/grdProjectPHP/prize_info.php?id=<?php echo $commodity['pId'] ?>">我要兌換</a>
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@ $pdo = null;
                         兌換排行榜
                     </a>
                     <?php $i=1; foreach($resumeList as $resume):?>
-                        <a href="prize_info.php?id=<?php echo $resume['com_id'];?>" class="list-group-item list-group-item-action">No.<?php echo $i." ".$resume['com_name'];?></a>
+                        <a href="prize_info.php?id=<?php echo $resume['pId'];?>" class="list-group-item list-group-item-action">No.<?php echo $i." ".$resume['pName'];?></a>
                     <?php $i++; endforeach;?>
                 </div>
             </div>

@@ -8,41 +8,38 @@ if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == TRUE){
 $username = $_POST['username'];
 $password = $_POST['password'];
 
+$pdo = null;
 //連線資料庫
-try{
-    $pdo = new PDO('mysql:host=localhost:3307;dbname=graduation_project',"root","466110");
-    //echo "成功連線";
-}catch (PDOException $e){
-    echo $e->getMessage();
-}
+require_once('connectDB.php');
+$pdo = connectDB();
 
 //取得帳號密碼
 try{
-    $sql = "SELECT * FROM `student` WHERE `stu_id`='{$username}';";
+    $sql = "SELECT * FROM `student` WHERE `sId`='{$username}';";
     $user_array = $pdo->query($sql);
 }catch (PDOException $e){
     echo $e->getMessage();
 }
 $user = $user_array->fetch();
 
-if(!empty($user) && $user['password'] == $password){
+if(!empty($user) && $user['sPassword'] == $password){
     //登入成功
     $_SESSION['is_login'] = true;
-    $_SESSION['login_id'] = $user['stu_id'];
+    $_SESSION['login_id'] = $user['sId'];
     header('Location: index.php');
 }else{
     try{
-        $sql = "SELECT * FROM `office` WHERE `office_id`='{$username}';";
+        $sql = "SELECT * FROM `worker` WHERE `wAccount`='{$username}';";
         $user_array = $pdo->query($sql);
     }catch (PDOException $e){
         echo $e->getMessage();
     }
     $user = $user_array->fetch();
-    if(!empty($user) && $user['office_pass'] == $password){
+    if(!empty($user) && $user['wPassword'] == $password){
         //登入成功
         $_SESSION['is_login'] = true;
         $_SESSION['is_office'] = true;
-        $_SESSION['login_id'] = $user['office_id'];
+        $_SESSION['login_id'] = $user['wAccount'];
         header('Location: index.php');
     }else{
     //登入失敗
