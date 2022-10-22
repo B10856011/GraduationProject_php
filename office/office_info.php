@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == true && $_SESSION[is_office] == true){
+if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == true && $_SESSION['is_office'] == true){
     $id = $_SESSION['login_id'];
 }else{
     $_SESSION['is_login'] = false;
@@ -17,7 +17,7 @@ try{
 }
 //管理員資訊
 try{
-    $sql = "SELECT * FROM `office` WHERE `office_id`='{$id}';";
+    $sql = "SELECT * FROM `worker` WHERE `wAccount`='{$id}';";
     $user_array = $pdo->query($sql);
 
     $user = $user_array->fetch();
@@ -117,7 +117,7 @@ $pdo = null;
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">
+                <a class="navbar-brand" href="../index.php">
                     <img src="https://cop.npust.edu.tw/wp-content/uploads/2021/04/NPUSTLogo.svg-1024x564.png" alt="" width="45" height="24" class="d-inline-block align-text-top"> 屏科大學生獎勵兌換系統
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,7 +128,7 @@ $pdo = null;
                     </ul>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $user['stu_id'].' '.$user['stu_name'] ?></a>
+                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $user['oId'].' '.$user['wName'] ?></a>
                         </li>
                     </ul>
                 </div>
@@ -169,12 +169,12 @@ $pdo = null;
         <div class="navbar-collapse ui-layout-west ui-layout-resizer-west-closed">
             <div class="leftNav">
                 <ul class="jd_menu_vertical" style="margin-left: 0; padding-left:0;">
-                    <li><a href="student_info.php"><span class="min-i-arrow"></span>學生資訊</a></li>
-                    <li><a href="exchange_point.php"><span class="min-i-arrow"></span>點數兌換</a></li>
-                    <li><a href="student_point_history.html"><span class="min-i-arrow"></span>歷史紀錄</a></li>
-                    <li><a href="forgot_password.html"><span class="min-i-arrow"></span>更改密碼</a></li>
-                    <li><a href="apply_reward_consent.html"><span class="min-i-arrow"></span>申請獎勵</a></li>
-                    <li><a href="forgot_metamask.html"><span class="min-i-arrow"></span>更換MetaMask地址</a></li>
+                    <li><a href="office_info.php"><span class="min-i-arrow"></span>office_info</a></li>
+                    <li><a href="prize_upload.php"><span class="min-i-arrow"></span>商品上架頁面</a></li>
+                    <li><a href="#"><span class="min-i-arrow"></span>修改商品</a></li>
+                    <li><a href="give_reward_consent.html"><span class="min-i-arrow"></span>獎懲申請書</a></li>
+                    <li><a href="give_reward_form.html"><span class="min-i-arrow"></span>給予獎懲</a></li>
+                    <li><a href="student_register.html"><span class="min-i-arrow"></span>學生註冊</a></li>
                 </ul>
             </div>
         </div>
@@ -182,7 +182,7 @@ $pdo = null;
             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">首頁</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">學生資訊</li>
+                    <li class="breadcrumb-item active" aria-current="page">教師介面</li>
                 </ol>
             </nav>
             <!--js輸出table-->
@@ -191,44 +191,17 @@ $pdo = null;
                 <table>
                     <thead>
                         <tr>
-                            <th><?php echo $user['stu_id'] ?></th>
-                            <td><?php echo $user['stu_name'] ?></td>
+                            <th></th>
+                            <td></td>
                         </tr>
                     </thead>
                     <tbody>
 
                         <tr>
                             <th>目前持有點數:</th>
-                            <td><?php echo $user['point'] ?></td>
+                            <td></td>
                         </tr>
-                        <tr>
-                            <th>嘉獎:</th>
-                            <td><?php echo $rp['com'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>小功:</th>
-                            <td><?php echo $rp['mime'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>大功:</th>
-                            <td><?php echo $rp['mame'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>警告:</th>
-                            <td><?php echo $rp['adm'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>小過:</th>
-                            <td><?php echo $rp['mide'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>大過:</th>
-                            <td><?php echo $rp['made'] ?></td>
-                        </tr>
-                        <tr>
-                            <th>錢包地址:</th>
-                            <td><?php echo $user['metamask'] ?></td>
-                        </tr>
+                        
                     </tbody>
                 </table>
 

@@ -74,7 +74,7 @@ $pdo = null;
                     <?php if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == TRUE):?>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php" id="portal_login_button">登出</a>
+                            <a class="nav-link" href="jump/logout.php" id="portal_login_button">登出</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -83,7 +83,7 @@ $pdo = null;
                         </li> -->
                         <?php if(isset($_SESSION['is_office']) && $_SESSION['is_office'] == true):?>
                         <li class="nav-item">
-                            <a class="nav-link" href="office_info.php">個人資訊(Office)</a>
+                            <a class="nav-link" href="office/office_info.php">個人資訊(Office)</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="confirm.php">待確認單</a>
@@ -96,7 +96,7 @@ $pdo = null;
                             <a class="nav-link" href="#">持有兌換券</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="student_info.php">個人資訊(Student)</a>
+                        <a class="nav-link" href="student/student_info.php">個人資訊(Student)</a>
                         </li>
                         <?php endif;?>
                         <!-- <li class="nav-item">

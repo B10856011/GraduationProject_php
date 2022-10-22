@@ -12,20 +12,17 @@ if(!isset($_GET['id'])){
 }
 $id = $_GET['id'];
 
+$pdo = null;
 //連線資料庫
-try{
-    $pdo = new PDO('mysql:host=localhost:3307;dbname=graduation_project',"root","466110");
-    //echo "成功連線";
-}catch (PDOException $e){
-    echo $e->getMessage();
-}
+require_once('connectDB.php');
+$pdo = connectDB();
 
 try{//取得商品資訊
-    $sql = "SELECT * FROM `commodity` WHERE `com_id`={$id};";
+    $sql = "SELECT * FROM `prize` WHERE `pId`={$id};";
     $commodity_array = $pdo->query($sql);
     $commodity = $commodity_array->fetch();
     //取得商品售出數量
-    $sql = "SELECT * FROM `resume` WHERE `com_id`={$id};";
+    $sql = "SELECT * FROM `prizelogs` WHERE `pId`={$id};";
     $resume = $pdo->query($sql);
     $count = $resume->rowCount();
     if($count == ""){
@@ -88,18 +85,24 @@ $pdo = null;
                         <!-- <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li> -->
+                        <?php if(isset($_SESSION['is_office']) && $_SESSION['is_office'] == true):?>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">獎勵申請</a>
+                            <a class="nav-link" href="office/office_info.php">個人資訊(Office)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="confirm.php">待確認單</a>
+                        </li>
+                        <?php else:?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="apply_reward_consent.html">獎勵申請</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">持有兌換券</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="student_info.php">個人資訊(Student)</a>
+                        <a class="nav-link" href="student/student_info.php">個人資訊(Student)</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="office/office_info.html">個人資訊(Office)</a>
-                        </li>
+                        <?php endif;?>
                         <!-- <li class="nav-item">
                             <a class="nav-link disabled">Disabled</a>
                         </li> -->
@@ -118,20 +121,20 @@ $pdo = null;
             <div class="row">
                 <div class="col-12 col-md-5">
 
-                    <img src="<?php echo $commodity['picture']?>"
+                    <img src="<?php echo $commodity['pictureAddress']?>"
                         class="img-thumbnail" 
-                        alt="<?php echo $commodity['com_name'] ?>">
+                        alt="<?php echo $commodity['pName'] ?>">
                 </div>
                 <div class="col-12 col-md-7">
                     <br>
-                    <h1><?php echo $commodity['com_name'] ?></h1>
+                    <h1><?php echo $commodity['pName'] ?></h1>
                     已售出 <?php echo $count?> <br><br>
                     <h5>兌換點數：<?php echo $commodity['price']?> 點</h5>
-                    <h5>商品地點：<?php echo $commodity['place']?></h5>
-                    <h5>商品描述：<br><?php echo $commodity['introdu']?></h5>
+                    <h5><?php //echo "商品地點：";echo $commodity['place']?></h5>
+                    <h5>商品描述：<br><?php echo $commodity['content']?></h5>
                     <br><br><br><br><br><br>
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <button class="btn btn-primary" type="button" onClick="location.href='sendBuy.php?id=<?php echo $commodity['com_id']?>'">兌換</button>
+                        <button class="btn btn-primary" type="button" onClick="location.href='sendBuy.php?id=<?php echo $commodity['pId']?>'">兌換</button>
                     </div>
                 </div>
             </div>

@@ -122,7 +122,7 @@ if(isset($_GET['msg'])){
     </div>
     <!--登入，form表單post資料，action放網址可以連首頁-->
     <div class="content-login-sub">
-        <form action="loginCheck.php" method="post" id="login">
+        <form action="jump/loginCheck.php" method="post" id="login">
             <h2 class="h2">登入</h2>
             <div class="login-from col-12 justify-content-center">
                 <div class="login-box">
