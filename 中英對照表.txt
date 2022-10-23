@@ -2,6 +2,7 @@ index                 首頁
 
 --office--
 student_register      學生註冊
+prize_upload          商品上架
 
 --student--
 student_info          學生資訊

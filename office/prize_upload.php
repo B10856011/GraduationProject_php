@@ -1,3 +1,9 @@
+<?php 
+
+//echo $_POST['comTest'];
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -30,7 +36,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="首頁.html">
+                <a class="navbar-brand" href="../index.php">
                     <img src="https://cop.npust.edu.tw/wp-content/uploads/2021/04/NPUSTLogo.svg-1024x564.png" alt="" width="45" height="24" class="d-inline-block align-text-top"> 屏科大學生獎勵兌換系統
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +48,7 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" href="商品上架頁面.html">商品上架</a>
+                            <a class="nav-link" href="prize_upload.php">商品上架</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link disabled">Disabled</a>
@@ -63,33 +69,41 @@
             商品上架
         </h1>
         <!-- <div class="col-12 col-md-8 col-lg-8"> -->
-        <div class="mb-3">
-            <label for="formFileMultiple" class="form-label">商品照片：</label>
-            <input class="form-control" type="file" id="formFileMultiple" multiple placeholder="請上傳商品照片">
-        </div>
+        <form action="../jump/prize_upload_send.php" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">商品照片：</label>
+                <input class="form-control" type="file" multiple placeholder="請上傳商品照片" name="picture" required>
+            </div>
 
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">商品名稱：</label>
-            <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="請輸入商品名稱">
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">商品使用地點：</label>
-            <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="請輸入商品使用地點">
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">商品描述：</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="請說明你的商品"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">商品價格：</label>
-            <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="請輸入商品價格">
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">商品數量：</label>
-            <input type="name" class="form-control" id="exampleFormControlInput1" placeholder="請輸入商品數量">
-        </div>
-        <!-- </div> -->
-        <center><a href="首頁_教師.html" class="btn btn-primary">確定上架</a></center>
+            <div class="mb-3">
+                <label class="form-label">商品名稱：</label>
+                <input type="text" class="form-control" placeholder="請輸入商品名稱" name="comName" required>
+            </div>
+            <!--
+            <div class="mb-3">
+                <label class="form-label">商品使用地點：</label>
+                <input type="text" class="form-control"placeholder="請輸入商品使用地點" name="useLoc" required>
+            </div>
+            -->
+            <div class="mb-3">
+                <label class="form-label">商品描述：</label>
+                <textarea class="form-control" rows="3" placeholder="請說明你的商品" name="comText" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">商品價格：</label>
+                <input type="text" class="form-control" placeholder="請輸入商品價格" name="comPrice" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">商品數量：</label>
+                <input type="text" class="form-control" placeholder="請輸入商品數量" name="comNum" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">到期日：</label>
+                <input type="datetime-local" name="expiryDate" required>
+            </div>
+            <!-- </div> -->
+            <center><input type="submit" class="btn btn-primary" value="確定上架"></center>
+        </form>
     </div>
 
 
