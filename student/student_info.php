@@ -8,21 +8,16 @@ if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == TRUE){
 }
 
 //連線資料庫
-try{
-    $pdo = new PDO('mysql:host=localhost:3307;dbname=graduation_project',"root","466110");
-    //echo "成功連線";
-}catch (PDOException $e){
-    echo $e->getMessage();
-}
+$pdo = null;
+//連線資料庫
+require_once('../connectDB.php');
+$pdo = connectDB();
 //學生資訊
 try{
-    $sql = "SELECT * FROM `student` WHERE `stu_id`='{$id}';";
+    $sql = "SELECT * FROM `student` WHERE `sId`='{$id}';";
     $user_array = $pdo->query($sql);
-    $sql = "SELECT * FROM `rp` WHERE `stu_id`='{$id}';";
-    $rp_array = $pdo->query($sql);
 
     $user = $user_array->fetch();
-    $rp = $rp_array->fetch();
 }catch (PDOException $e){
     echo $e->getMessage();
 }
@@ -130,7 +125,7 @@ $pdo = null;
                     </ul>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $user['stu_id'].' '.$user['stu_name'] ?></a>
+                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $user['sId'].' '.$user['sName'] ?></a>
                         </li>
                     </ul>
                 </div>
@@ -172,8 +167,7 @@ $pdo = null;
             <div class="leftNav">
                 <ul class="jd_menu_vertical" style="margin-left: 0; padding-left:0;">
                     <li><a href="student_info.php"><span class="min-i-arrow"></span>學生資訊</a></li>
-                    <li><a href="exchange_point.php"><span class="min-i-arrow"></span>點數兌換</a></li>
-                    <li><a href="student_point_history.html"><span class="min-i-arrow"></span>歷史紀錄</a></li>
+                    <li><a href="student_point_history.php"><span class="min-i-arrow"></span>歷史紀錄</a></li>
                     <li><a href="forgot_password.html"><span class="min-i-arrow"></span>更改密碼</a></li>
                     <li><a href="apply_reward_consent.html"><span class="min-i-arrow"></span>申請獎勵</a></li>
                     <li><a href="forgot_metamask.html"><span class="min-i-arrow"></span>更換MetaMask地址</a></li>
@@ -192,8 +186,8 @@ $pdo = null;
                 <table>
                     <thead>
                         <tr>
-                            <th><?php echo $user['stu_id'] ?></th>
-                            <td><?php echo $user['stu_name'] ?></td>
+                            <th><?php echo $user['sId'] ?></th>
+                            <td><?php echo $user['sName'] ?></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -204,31 +198,31 @@ $pdo = null;
                         </tr>
                         <tr>
                             <th>嘉獎:</th>
-                            <td><?php echo $rp['com'] ?></td>
+                            <td><?php echo $user['Commendation'] ?></td>
                         </tr>
                         <tr>
                             <th>小功:</th>
-                            <td><?php echo $rp['mime'] ?></td>
+                            <td><?php echo $user['MinorMerit'] ?></td>
                         </tr>
                         <tr>
                             <th>大功:</th>
-                            <td><?php echo $rp['mame'] ?></td>
+                            <td><?php echo $user['MajorMerit'] ?></td>
                         </tr>
                         <tr>
                             <th>警告:</th>
-                            <td><?php echo $rp['adm'] ?></td>
+                            <td><?php echo $user['Admonition'] ?></td>
                         </tr>
                         <tr>
                             <th>小過:</th>
-                            <td><?php echo $rp['mide'] ?></td>
+                            <td><?php echo $user['MinorDemerit'] ?></td>
                         </tr>
                         <tr>
                             <th>大過:</th>
-                            <td><?php echo $rp['made'] ?></td>
+                            <td><?php echo $user['MajorDemerit'] ?></td>
                         </tr>
                         <tr>
                             <th>錢包地址:</th>
-                            <td><?php echo $user['metamask'] ?></td>
+                            <td><?php echo $user['sAddress'] ?></td>
                         </tr>
                     </tbody>
                 </table>
