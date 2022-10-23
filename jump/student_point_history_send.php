@@ -2,7 +2,7 @@
 session_start();
 
 if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == TRUE){
-    $id = $_SESSION['login_id'];
+    $sId = $_SESSION['login_id'];
 }else{
     header('Location: ../login.php?msg=請再次登入');
 }
