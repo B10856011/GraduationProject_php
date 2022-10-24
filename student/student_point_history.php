@@ -200,8 +200,8 @@ $pdo = null;
                     <li><a href="student_info.html"><span class="min-i-arrow"></span>學生資訊</a></li>
                     <li><a href="exchange_point.html"><span class="min-i-arrow"></span>點數兌換</a></li>
                     <li><a href="student_point_history.html"><span class="min-i-arrow"></span>歷史紀錄</a></li>
-                    <li><a href="forgot_password.html"><span class="min-i-arrow"></span>更改密碼</a></li>
-                    <li><a href="apply_reward_consent.html"><span class="min-i-arrow"></span>申請獎勵</a></li>
+                    <li><a href="forgot_password.php"><span class="min-i-arrow"></span>更改密碼</a></li>
+                    <li><a href="apply_reward_consent.php"><span class="min-i-arrow"></span>申請獎勵</a></li>
                     <li><a href="forgot_metamask.html"><span class="min-i-arrow"></span>更換MetaMask地址</a></li>
                 </ul>
             </div>
@@ -215,8 +215,8 @@ $pdo = null;
                     <li><a class="dropdown-item" href="student_info.html"><span class="min-i-arrow"></span>學生資訊</a></li>
                     <li><a class="dropdown-item" href="exchange_point.html"><span class="min-i-arrow"></span>點數兌換</a></li>
                     <li><a class="dropdown-item" href="student_point_history.html"><span class="min-i-arrow"></span>歷史紀錄</a></li>
-                    <li><a class="dropdown-item" href="forgot_password.html"><span class="min-i-arrow"></span>更改密碼</a></li>
-                    <li><a class="dropdown-item" href="apply_reward_consent.html"><span class="min-i-arrow"></span>申請獎勵</a></li>
+                    <li><a class="dropdown-item" href="forgot_password.php"><span class="min-i-arrow"></span>更改密碼</a></li>
+                    <li><a class="dropdown-item" href="apply_reward_consent.php"><span class="min-i-arrow"></span>申請獎勵</a></li>
                     <li><a class="dropdown-item" href="forgot_metamask.html"><span class="min-i-arrow"></span>更換MetaMask地址</a></li>
                 </ul>
             </ul>

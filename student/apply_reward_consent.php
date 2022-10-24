@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if(isset($_SESSION['is_login']) && $_SESSION['is_login'] == TRUE){
+    $id = $_SESSION['login_id'];
+}else{
+    header('Location: login.php?msg=請再次登入');
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -41,7 +51,7 @@
                     </ul>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="student_info.html">學號</a>
+                            <a class="nav-link" href="student_info.php"><?php echo $id?></a>
                         </li>
                     </ul>
                 </div>
@@ -58,7 +68,7 @@
         </div>
         <!-- </div>
         </div> -->
-        <a href="apply_reward_form.html" class="btn btn-primary">同意並前往填寫申請</a>
+        <a href="apply_reward_form.php" class="btn btn-primary">同意並前往填寫申請</a>
     </div>
 </body>
 

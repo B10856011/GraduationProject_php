@@ -37,3 +37,6 @@ office                管理員頁面
 student               學生頁面
 
 ----------------------------------------------------
+未完成
+forgot_password
+apply_reward_

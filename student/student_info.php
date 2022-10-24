@@ -168,8 +168,8 @@ $pdo = null;
                 <ul class="jd_menu_vertical" style="margin-left: 0; padding-left:0;">
                     <li><a href="student_info.php"><span class="min-i-arrow"></span>學生資訊</a></li>
                     <li><a href="student_point_history.php"><span class="min-i-arrow"></span>歷史紀錄</a></li>
-                    <li><a href="forgot_password.html"><span class="min-i-arrow"></span>更改密碼</a></li>
-                    <li><a href="apply_reward_consent.html"><span class="min-i-arrow"></span>申請獎勵</a></li>
+                    <li><a href="forgot_password.php"><span class="min-i-arrow"></span>更改密碼</a></li>
+                    <li><a href="apply_reward_consent.php"><span class="min-i-arrow"></span>申請獎勵</a></li>
                     <li><a href="forgot_metamask.html"><span class="min-i-arrow"></span>更換MetaMask地址</a></li>
                 </ul>
             </div>

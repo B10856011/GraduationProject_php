@@ -30,7 +30,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="../index.html">
+                <a class="navbar-brand" href="../index.php">
                     <img src="https://cop.npust.edu.tw/wp-content/uploads/2021/04/NPUSTLogo.svg-1024x564.png" alt="" width="45" height="24" class="d-inline-block align-text-top"> 屏科大學生獎勵兌換系統
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" href="獎勵申請_同意書.html">申請獎勵</a>
+                            <a class="nav-link" href="apply_reward_consent.php">申請獎勵</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">持有兌換券</a>
