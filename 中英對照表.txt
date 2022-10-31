@@ -1,4 +1,3 @@
-
 --jump--
 deleteCom                  刪除商品
 loginCheck                 確認帳密
