@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION['is_login']) && $_SESSION['is_login'] == true && $_SESSION['is_office'] == true) {
     $id = $_SESSION['login_id'];
-}else{
+} else {
     $_SESSION['is_login'] = false;
     header('Location: ../login.php?msg=請再次登入');
 }
@@ -12,7 +12,7 @@ if (isset($_SESSION['is_login']) && $_SESSION['is_login'] == true && $_SESSION['
 require_once('../connectDB.php');
 $pdo = connectDB();
 //管理員資訊
-try{
+try {
     $sql = "SELECT * FROM `worker` WHERE `wAccount`='{$id}';";
     $user_array = $pdo->query($sql);
     $user = $user_array->fetch();
@@ -22,7 +22,7 @@ try{
     $office_array = $pdo->query($sql);
     $office = $office_array->fetch();
     $oName = $office['oName'];
-}catch (PDOException $e){
+} catch (PDOException $e) {
     echo $e->getMessage();
 }
 
@@ -50,22 +50,26 @@ $pdo = null;
             margin: 0;
             padding: 0;
         }
+
         .main-footer {
             background-color: rgb(150, 150, 150);
         }
-        
+
         .carousel {
             margin-bottom: 10px;
         }
+
         .container .leftNav {
             width: 20%;
             float: left;
             padding-right: 10px;
         }
+
         .container .rightDiv {
             width: 80%;
             float: right;
         }
+
         .leftNav ul li {
             font-size: large;
             background: url('../images/leftNav_bg.jpg') repeat-x;
@@ -73,6 +77,7 @@ $pdo = null;
             border-bottom: 1px solid #c5c5c5;
             line-height: 40px;
         }
+
         .leftNav ul li a {
             color: #494949;
             display: block;
@@ -81,28 +86,33 @@ $pdo = null;
             /* Old browsers */
             background: url('../images/topNav_left.jpg') repeat-x;
         }
+
         .leftNav ul li a:hover {
             color: #494949;
             /*background: #fef68b url('../images/leftNav_bg_hover.jpg') repeat-x;*/
             background: url('../images/topNav_left_h.jpg') repeat-x;
             text-decoration: none;
         }
+
         .table,
         td,
         th {
             padding: 5px;
             text-align: center;
         }
+
         .rightDiv table td {
             font-size: large;
             font-family: verdana;
             border: 1px solid #290023;
         }
+
         .rightDiv table th {
             font-size: large;
             border: 1px solid #290023;
             background: rgb(235, 234, 234);
         }
+
         .rightDiv table thead {
             font-weight: bold;
             font-size: x-large;
@@ -111,9 +121,11 @@ $pdo = null;
         .dropdown {
             display: none;
         }
+
         .dropdown {
             display: none;
         }
+
         @media (max-width: 768px) {
             .leftNav {
                 display: none;
@@ -122,9 +134,11 @@ $pdo = null;
             .container .rightDiv {
                 width: 100%;
             }
+
             .container .rightDiv {
                 width: 100%;
             }
+
             .dropdown {
                 display: contents;
             }
@@ -140,14 +154,14 @@ $pdo = null;
                     <img src="https://cop.npust.edu.tw/wp-content/uploads/2021/04/NPUSTLogo.svg-1024x564.png" alt="" width="45" height="24" class="d-inline-block align-text-top"> 屏科大學生獎勵兌換系統
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                     </ul>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $oName.' '.$user['wName'] ?></a>
+                            <a class="nav-link" href="#" id="portal_login_button"><?php echo $oName . ' ' . $user['wName'] ?></a>
                         </li>
                     </ul>
                 </div>
@@ -188,7 +202,7 @@ $pdo = null;
         <div class="navbar-collapse ui-layout-west ui-layout-resizer-west-closed">
             <div class="leftNav">
                 <ul class="jd_menu_vertical" style="margin-left: 0; padding-left:0;">
-                    <li><a href="office_info.php"><span class="min-i-arrow"></span><?php echo $oName?>已上架商品</a></li>
+                    <li><a href="office_info.php"><span class="min-i-arrow"></span><?php echo $oName ?>已上架商品</a></li>
                     <li><a href="prize_upload.php"><span class="min-i-arrow"></span>商品上架頁面</a></li>
                     <!-- <li><a href="give_reward_consent.html"><span class="min-i-arrow"></span>獎懲申請書</a></li> -->
                     <li><a href="give_reward_form.php"><span class="min-i-arrow"></span>給予獎懲</a></li>
@@ -202,7 +216,7 @@ $pdo = null;
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
                 <ul class="jd_menu_vertical" aria-labelledby="dropdownMenu" style="margin-left: 0; padding-left:0;">
-                <li><a class="dropdown-item" href="office_info.php"><span class="min-i-arrow"></span><?php echo $oName?>已上架商品</a></li>
+                    <li><a class="dropdown-item" href="office_info.php"><span class="min-i-arrow"></span><?php echo $oName ?>已上架商品</a></li>
                     <li><a class="dropdown-item" href="prize_upload.php"><span class="min-i-arrow"></span>商品上架頁面</a></li>
                     <!-- <li><a class="dropdown-item" href="give_reward_consent.html"><span class="min-i-arrow"></span>獎懲申請書</a></li> -->
                     <li><a class="dropdown-item" href="give_reward_form.php"><span class="min-i-arrow"></span>給予獎懲</a></li>
@@ -336,7 +350,7 @@ $pdo = null;
                                         "option": option
                                     },
                                     success: async function(res) {
-                                        var rescount = Object.keys(res).length;
+                                        let rescount = Object.keys(res).length;
                                         if (option == 1) { //購買時間 處事ID 獎品ID 單價 購買數量 總花費點數 學生ID (學生點數) (上鏈時間)
                                             let transactionTime = [];
                                             let oId = [];
@@ -357,7 +371,9 @@ $pdo = null;
                                                 sId[i] = res[i].sId;
                                             }
                                             try {
-                                                await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId).send({from: user});
+                                                Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId).send({
+                                                    from: user
+                                                });
                                                 /*
                                                 $.ajax({
                                                     url: '../jump/uploadBlockchain.php',
@@ -399,10 +415,10 @@ $pdo = null;
     var web3Provider = new Web3.providers.HttpProvider(provider);
     var web3 = new Web3(web3Provider);
     //var web3 = new Web3(web3.currentProvider);
-    var Contract;
+    let Contract;
     var ContractAddress = '0xE910127CE19cD075f327704fDBf7Eae339640780';
 
-    //Contract = new web3.eth.Contract(abi, ContractAddress);]
+    //Contract = new web3.eth.Contract(abi, ContractAddress);
 </script>
 
 </html>
