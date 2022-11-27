@@ -300,18 +300,16 @@ $pdo = null;
                                 var select = document.getElementById("searchSelect"); //定義select，方便之後取值
                                 var option = select.options[select.selectedIndex].value; //將option的值存起來
 
-                                //var provider = 'https://goerli.infura.io/v3/687379e0e2b54760bd49b3b188511986';
-                                //var web3Provider = new Web3.providers.HttpProvider(provider);
-                                //var web3 = new Web3(web3Provider);
-                                //var Contract;
-                                //var ContractAddress = '0x4c23EB3c47188cA42f4dA6F2Eb7880D527c28079';
-
+                                var accounts = await window.ethereum.request({
+                                    method: 'eth_requestAccounts'
+                                });
+                                const user = accounts[0];
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 if (option == 1) {
                                     try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
-                                        Contract.methods.readBuyList().call().then(function(data) {
-                                            document.getElementById('test'.textContent) = data;
-                                        })
+                                        let blockNum = await web3.eth.getBlockNumber();
+                                        let data = await Contract.methods.readBuyList(8030211).call({from: user});
+                                        console.log(data[0][0]);
                                         document.getElementById("exportTable").innerHTML = "";
                                         document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
 
@@ -351,7 +349,16 @@ $pdo = null;
                                     },
                                     success: async function(res) {
                                         let rescount = Object.keys(res).length;
-                                        if (option == 1) { //購買時間 處事ID 獎品ID 單價 購買數量 總花費點數 學生ID (學生點數) (上鏈時間)
+                                        if (option == 1) { //購買時間 處事ID 獎品ID 單價 購買數量 總花費點數 學生ID (學生點數) 上鏈時間
+                                            var nowTime = new Date();
+                                            let year = nowTime.getFullYear();
+                                            let month = nowTime.getMonth() + 1;
+                                            let day = nowTime.getDate();
+                                            let Hours = nowTime.getHours();
+                                            let Minutes = nowTime.getMinutes();
+                                            let Seconds = nowTime.getSeconds();
+                                            let now = year+'-'+month+'-'+day+' '+Hours+':'+Minutes+':'+Seconds;
+                                            console.log(now);
                                             let transactionTime = [];
                                             let oId = [];
                                             let pId = [];
@@ -371,9 +378,8 @@ $pdo = null;
                                                 sId[i] = res[i].sId;
                                             }
                                             try {
-                                                Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId).send({
-                                                    from: user
-                                                });
+                                                let data = await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user});
+                                                let blockId = data.blockNumber;
                                                 /*
                                                 $.ajax({
                                                     url: '../jump/uploadBlockchain.php',
@@ -411,14 +417,18 @@ $pdo = null;
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script>
-    var provider = 'https://goerli.infura.io/v3/687379e0e2b54760bd49b3b188511986';
-    var web3Provider = new Web3.providers.HttpProvider(provider);
-    var web3 = new Web3(web3Provider);
-    //var web3 = new Web3(web3.currentProvider);
+    //var provider = 'https://goerli.infura.io/v3/687379e0e2b54760bd49b3b188511986';
+    //var web3Provider = new Web3.providers.HttpProvider(provider);
+    //var web3 = new Web3(web3Provider);
+    var web3 = new Web3(web3.currentProvider);
     let Contract;
-    var ContractAddress = '0xE910127CE19cD075f327704fDBf7Eae339640780';
+    var ContractAddress = '0xc20AeFd1B6834D8e2026D18856B078cEbf86F985';
 
     //Contract = new web3.eth.Contract(abi, ContractAddress);
+    //var nowTime = new Date();
+    //let year = nowTime.getFullYear();
+    //let month = nowTime.getMonth() + 1;
+    //let day = nowTime.getDate();
 </script>
 
 </html>

@@ -34,6 +34,7 @@ if(isset($_POST["act"]) && $_POST["act"]=="postsomething") {
             
             $userData[]=array(
             'pId'=>$row['pId'],
+            'oId'=>$row['oId'],
             'sId'=>$row['sId'],
             'amount'=>$row['amount'],
             'price'=>$row['price'],

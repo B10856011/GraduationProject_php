@@ -33,20 +33,19 @@ abi = [{
                 "internalType": "string[]",
                 "name": "_sId",
                 "type": "string[]"
+            },
+            {
+                "internalType": "string",
+                "name": "_nowTime",
+                "type": "string"
             }
         ],
         "name": "addBuyList",
         "outputs": [{
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
         "stateMutability": "nonpayable",
         "type": "function"
     },
@@ -88,11 +87,26 @@ abi = [{
                 "type": "uint256[]"
             },
             {
-                "internalType": "uint256",
+                "internalType": "string",
                 "name": "",
-                "type": "uint256"
+                "type": "string"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{
+            "internalType": "uint256",
+            "name": "_blockId",
+            "type": "uint256"
+        }],
+        "name": "readUpTime",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
         "stateMutability": "view",
         "type": "function"
     }
