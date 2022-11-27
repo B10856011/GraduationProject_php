@@ -332,7 +332,6 @@ $pdo = null;
 
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 //console.log(123);
-                                await web3.eth.getBlockNumber().then(console.log);
                                 var accounts = await window.ethereum.request({
                                     method: 'eth_requestAccounts'
                                 });
@@ -380,20 +379,23 @@ $pdo = null;
                                             try {
                                                 let data = await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user});
                                                 let blockId = data.blockNumber;
-                                                /*
+                                                console.log(blockId);
+                                                sleep(10000);
                                                 $.ajax({
-                                                    url: '../jump/uploadBlockchain.php',
+                                                    url: '../jump/upBlockchainLog.php',
                                                     method: 'POST',
                                                     dataType: 'json',
                                                     data: {
                                                         "act": "postsomething",
-                                                        "blockId": data[0],
-                                                        "time": data[1]
+                                                        "blockNum": blockId,
+                                                        "time": now
                                                     },
                                                     success: function() {
-                                                        console.log("成功紀錄1");
+                                                        console.log("成功紀錄");
+                                                    },error: function (error) {
+                                                        console.log('error; ' + JSON.stringify(error));
                                                     }
-                                                });*/
+                                                });
                                             } catch (error) {
                                                 console.log(error);
                                                 alert(error.message);
@@ -429,6 +431,11 @@ $pdo = null;
     //let year = nowTime.getFullYear();
     //let month = nowTime.getMonth() + 1;
     //let day = nowTime.getDate();
+    function sleep(waitMsec) {
+        var startMsec = new Date();
+        
+        while (new Date() - startMsec < waitMsec);
+    }
 </script>
 
 </html>
