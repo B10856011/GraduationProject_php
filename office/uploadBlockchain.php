@@ -357,7 +357,8 @@ $pdo = null;
                                                 sId[i] = res[i].sId;
                                             }
                                             try {
-                                                Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId).send({from: user});
+                                                await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId).send({from: user});
+                                                /*
                                                 $.ajax({
                                                     url: '../jump/uploadBlockchain.php',
                                                     method: 'POST',
@@ -370,7 +371,7 @@ $pdo = null;
                                                     success: function() {
                                                         console.log("成功紀錄1");
                                                     }
-                                                })
+                                                });*/
                                             } catch (error) {
                                                 console.log(error);
                                                 alert(error.message);
