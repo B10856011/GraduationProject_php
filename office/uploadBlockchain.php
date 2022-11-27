@@ -307,12 +307,28 @@ $pdo = null;
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 if (option == 1) {
                                     try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
+                                        $.ajax({
+                                            url: '../jump/upBlockchainLog.php',
+                                            method: 'POST',
+                                            dataType: 'json',
+                                            data: {
+                                                "act": "postsomething",
+                                                "blockNum": blockId,
+                                                "time": now
+                                            },
+                                            success: function() {
+                                                console.log("成功紀錄");
+                                            },error: function (error) {
+                                                console.log('error; ' + JSON.stringify(error));
+                                            }
+                                        });
                                         let blockNum = await web3.eth.getBlockNumber();
-                                        let data = await Contract.methods.readBuyList(8030211).call({from: user});
+                                        let data = await Contract.methods.readBuyList(8030968).call({from: user});
+                                        
                                         console.log(data[0][0]);
                                         document.getElementById("exportTable").innerHTML = "";
                                         document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
-
+                                        
                                     } catch (error) {
                                         alert(error.message);
                                     }
