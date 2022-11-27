@@ -308,13 +308,12 @@ $pdo = null;
                                 if (option == 1) {
                                     try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
                                         $.ajax({
-                                            url: '../jump/upBlockchainLog.php',
+                                            url: '../jump/searchBlockchain.php',
                                             method: 'POST',
                                             dataType: 'json',
                                             data: {
                                                 "act": "postsomething",
-                                                "blockNum": blockId,
-                                                "time": now
+                                                "option": option
                                             },
                                             success: function() {
                                                 console.log("成功紀錄");
