@@ -303,7 +303,7 @@ $pdo = null;
                                 var accounts = await window.ethereum.request({
                                     method: 'eth_requestAccounts'
                                 });
-                                const user = accounts[0];
+                                //const user = accounts[0];
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 if (option == 1) {
                                     try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
@@ -322,7 +322,7 @@ $pdo = null;
                                             }
                                         });
                                         let blockNum = await web3.eth.getBlockNumber();
-                                        let data = await Contract.methods.readBuyList(8030968).call({from: user});
+                                        let data = await Contract.methods.readBuyList(8030968).call();
                                         
                                         console.log(data[0][0]);
                                         document.getElementById("exportTable").innerHTML = "";
