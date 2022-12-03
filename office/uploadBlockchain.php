@@ -299,14 +299,12 @@ $pdo = null;
                             async function searchBlockchain() {
                                 var select = document.getElementById("searchSelect"); //定義select，方便之後取值
                                 var option = select.options[select.selectedIndex].value; //將option的值存起來
-
-                                var accounts = await window.ethereum.request({
-                                    method: 'eth_requestAccounts'
-                                });
-                                //const user = accounts[0];
+                                
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
+                                let blockNum = await web3.eth.getBlockNumber();
                                 if (option == 1) {
                                     try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
+                                        let data;
                                         $.ajax({
                                             url: '../jump/searchBlockchain.php',
                                             method: 'POST',
@@ -315,19 +313,36 @@ $pdo = null;
                                                 "act": "postsomething",
                                                 "option": option
                                             },
-                                            success: function() {
-                                                console.log("成功紀錄");
-                                            },error: function (error) {
-                                                console.log('error; ' + JSON.stringify(error));
+                                            success: async function(res) {
+                                                blockNum = res;
+                                                console.log("成功查詢："+blockNum);
+                                                await Contract.methods.readBuyList(blockNum).call().then(function(result){
+                                                    data = result;
+                                                });
+                                                console.log(data);
+                                                document.getElementById("exportTable").innerHTML = "";
+                                                document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
+                                                $.ajax({
+                                                    url: '../jump/idToName.php',
+                                                    method: 'POST',
+                                                    dataType: 'json',
+                                                    data: {
+                                                        "act": "postsomething",
+                                                        "oIdArray": data[2],
+                                                        "pIdArray": data[3]
+                                                    },
+                                                    success: function(res) {
+                                                        console.log("--結束查詢--");
+                                                        let NameList = res;
+                                                        console.log(data[0].length);
+                                                        for (var i = 0; i < data[0].length; i++) {
+                                                            document.getElementById("exportTable").innerHTML += '<tr><td>' + data[0][i] + '</td><td>' + data[1][i] + '</td><td>' + NameList['office'][data[2][i]] + '</td><td>' + NameList['prize'][data[3][i]] + '</td><td>' + data[4][i] + '</td><td>' + data[5][i] + '</td><td>' + (data[4][i]*data[5][i]) + '</td></tr></table>';
+                                                            //console.log(data[0][i]);
+                                                        }
+                                                    }
+                                                });
                                             }
                                         });
-                                        let blockNum = await web3.eth.getBlockNumber();
-                                        let data = await Contract.methods.readBuyList(8030968).call();
-                                        
-                                        console.log(data[0][0]);
-                                        document.getElementById("exportTable").innerHTML = "";
-                                        document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
-                                        
                                     } catch (error) {
                                         alert(error.message);
                                     }
@@ -384,8 +399,8 @@ $pdo = null;
                                             let time;
                                             for (let i = 0; i < rescount; ++i) {
                                                 transactionTime[i] = res[i].transactionTime;
-                                                oId[i] = res[i].oId;
-                                                pId[i] = res[i].pId;
+                                                oId[i] = String(res[i].oId);
+                                                pId[i] = String(res[i].pId);
                                                 price[i] = res[i].price;
                                                 amount[i] = res[i].amount;
                                                 point[i] = res[i].point;
@@ -395,13 +410,14 @@ $pdo = null;
                                                 let data = await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user});
                                                 let blockId = data.blockNumber;
                                                 console.log(blockId);
-                                                sleep(10000);
+                                                sleep(5000);
                                                 $.ajax({
                                                     url: '../jump/upBlockchainLog.php',
                                                     method: 'POST',
                                                     dataType: 'json',
                                                     data: {
                                                         "act": "postsomething",
+                                                        "option": option,
                                                         "blockNum": blockId,
                                                         "time": now
                                                     },
@@ -439,7 +455,7 @@ $pdo = null;
     //var web3 = new Web3(web3Provider);
     var web3 = new Web3(web3.currentProvider);
     let Contract;
-    var ContractAddress = '0xc20AeFd1B6834D8e2026D18856B078cEbf86F985';
+    var ContractAddress = '0x8B0570D411A507E14242e6282010223f66e84d3a';
 
     //Contract = new web3.eth.Contract(abi, ContractAddress);
     //var nowTime = new Date();

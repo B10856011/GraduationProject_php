@@ -21,9 +21,11 @@ if(isset($_POST["act"]) && $_POST["act"]=="postsomething") {
 
     $time = $_POST['time'];
     $blockId = $_POST['blockNum'];
+    $option = $_POST['option'];
 
-    $stmt = $pdo->prepare("INSERT INTO `blockchainlogs`(`id`, `uploadTime`, `blockHeight`) VALUES (:id, :uploadTime, :blockHeight)");
+    $stmt = $pdo->prepare("INSERT INTO `blockchainlogs`(`id`, `type`, `uploadTime`, `blockHeight`) VALUES (:id, :typeOption, :uploadTime, :blockHeight)");
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':typeOption', $option, PDO::PARAM_INT);
     $stmt->bindParam(':uploadTime', $time, PDO::PARAM_STR);
     $stmt->bindParam(':blockHeight', $blockId, PDO::PARAM_INT);
 
