@@ -45,6 +45,10 @@ $pdo = null;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.0/web3.min.js"></script>
     <script src="../abi.js"></script>
 
+    <!-- The legacy-web3 script must run BEFORE your other scripts. -->
+    <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
+
+
     <style>
         * {
             margin: 0;
@@ -233,13 +237,14 @@ $pdo = null;
             </nav>
             <!--js輸出table-->
             <h3>區塊鏈</h3>
+            <div id="upDBTime"></div>
             <div class="">
                 <div class="search">
                     <table class="search">
                         <td>
                             <select class="form-select" name="searchSelect" id="searchSelect">
                                 <option selected value="1">獎品兌換紀錄</option>
-                                <option value="2">學生持有獎品</option>
+                                <option value="2">使用紀錄</option>
                                 <option value="3">獎懲紀錄</option>
                             </select>
                         </td>
@@ -254,6 +259,7 @@ $pdo = null;
                         <script>
                             //查詢資料庫
                             function search() {
+                                document.getElementById("upDBTime").innerHTML = "";
                                 var select = document.getElementById("searchSelect"); //定義select，方便之後取值
                                 var option = select.options[select.selectedIndex].value; //將option的值存起來
                                 $.ajax({
@@ -299,7 +305,8 @@ $pdo = null;
                             async function searchBlockchain() {
                                 var select = document.getElementById("searchSelect"); //定義select，方便之後取值
                                 var option = select.options[select.selectedIndex].value; //將option的值存起來
-                                
+
+                                let ContractAddress = '0xd153Eb4Df39E0cC04198425e75F67AaeE611985F';
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 let blockNum = await web3.eth.getBlockNumber();
                                 if (option == 1) {
@@ -314,14 +321,14 @@ $pdo = null;
                                                 "option": option
                                             },
                                             success: async function(res) {
-                                                blockNum = res;
-                                                console.log("成功查詢："+blockNum);
-                                                await Contract.methods.readBuyList(blockNum).call().then(function(result){
+                                                blockNum = res[0];
+                                                uptime = res[1];
+                                                console.log("成功查詢：" + blockNum);
+                                                await Contract.methods.readBuyList(blockNum).call().then(function(result) {
                                                     data = result;
                                                 });
+                                                document.getElementById("upDBTime").innerHTML = "上傳時間：" + uptime;
                                                 console.log(data);
-                                                document.getElementById("exportTable").innerHTML = "";
-                                                document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
                                                 $.ajax({
                                                     url: '../jump/idToName.php',
                                                     method: 'POST',
@@ -333,10 +340,13 @@ $pdo = null;
                                                     },
                                                     success: function(res) {
                                                         console.log("--結束查詢--");
+                                                        document.getElementById("exportTable").innerHTML = "";
+                                                        document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">單價</th><th scope="col">數量</th><th scope="col">花費點數</th></tr>';
                                                         let NameList = res;
+                                                        console.log(NameList);
                                                         console.log(data[0].length);
                                                         for (var i = 0; i < data[0].length; i++) {
-                                                            document.getElementById("exportTable").innerHTML += '<tr><td>' + data[0][i] + '</td><td>' + data[1][i] + '</td><td>' + NameList['office'][data[2][i]] + '</td><td>' + NameList['prize'][data[3][i]] + '</td><td>' + data[4][i] + '</td><td>' + data[5][i] + '</td><td>' + (data[4][i]*data[5][i]) + '</td></tr></table>';
+                                                            document.getElementById("exportTable").innerHTML += '<tr><td>' + data[0][i] + '</td><td>' + data[1][i] + '</td><td>' + NameList['office'][data[2][i]-1] + '</td><td>' + NameList['prize'][data[3][i]] + '</td><td>' + data[4][i] + '</td><td>' + data[5][i] + '</td><td>' + (data[4][i] * data[5][i]) + '</td></tr></table>';
                                                             //console.log(data[0][i]);
                                                         }
                                                     }
@@ -347,12 +357,99 @@ $pdo = null;
                                         alert(error.message);
                                     }
                                 } else if (option == 2) {
-
+                                    try {
+                                        let data;
+                                        $.ajax({
+                                            url: '../jump/searchBlockchain.php',
+                                            method: 'POST',
+                                            dataType: 'json',
+                                            data: {
+                                                "act": "postsomething",
+                                                "option": option
+                                            },
+                                            success: async function(res) {
+                                                blockNum = res[0];
+                                                uptime = res[1];
+                                                console.log("成功查詢：" + blockNum);
+                                                await Contract.methods.readUselogs(blockNum).call().then(function(result) {
+                                                    data = result;
+                                                });
+                                                document.getElementById("upDBTime").innerHTML = "上傳時間：" + uptime;
+                                                console.log(data);
+                                                $.ajax({
+                                                    url: '../jump/idToName.php',
+                                                    method: 'POST',
+                                                    dataType: 'json',
+                                                    data: {
+                                                        "act": "postsomething",
+                                                        "option": option
+                                                    },
+                                                    success: function(res) {
+                                                        console.log("--結束查詢--");
+                                                        document.getElementById("exportTable").innerHTML = "";
+                                                        document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">使用時間</th><th scope="col">處室</th><th scope="col">獎品名稱</th><th scope="col">數量</th></tr>';
+                                                        let NameList = res;
+                                                        console.log(data[0].length);
+                                                        for (var i = 0; i < data[0].length; i++) {
+                                                            document.getElementById("exportTable").innerHTML += '<tr><td>' + data[2][i] + '</td><td>' + data[0][i] + '</td><td>' + NameList['office'][data[4][i]-1] + '</td><td>' + NameList['prize'][data[1][i]] + '</td><td>' + data[3][i] + '</td></tr></table>';
+                                                            //console.log(data[0][i]);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } catch (error) {
+                                        alert(error.message);
+                                    }
                                 } else if (option == 3) {
-
+                                    try { //學生ID 購買時間 處事ID 獎品ID 單價 購買數量 (學生點數)
+                                        let data;
+                                        $.ajax({
+                                            url: '../jump/searchBlockchain.php',
+                                            method: 'POST',
+                                            dataType: 'json',
+                                            data: {
+                                                "act": "postsomething",
+                                                "option": option
+                                            },
+                                            success: async function(res) {
+                                                blockNum = res[0];
+                                                uptime = res[1];
+                                                console.log("成功查詢：" + blockNum);
+                                                await Contract.methods.readRewardslogs(blockNum).call().then(function(result) {
+                                                    data = result;
+                                                });
+                                                document.getElementById("upDBTime").innerHTML = "上傳時間：" + uptime;
+                                                console.log(data);
+                                                $.ajax({
+                                                    url: '../jump/idToName.php',
+                                                    method: 'POST',
+                                                    dataType: 'json',
+                                                    data: {
+                                                        "act": "postsomething",
+                                                        "option": option
+                                                    },
+                                                    success: function(res) {
+                                                        console.log("--結束查詢--");
+                                                        document.getElementById("exportTable").innerHTML = "";
+                                                        document.getElementById("exportTable").innerHTML += '<table><tr><th scope="col">學號</th><th scope="col">時間</th><th scope="col">嘉獎</th><th scope="col">小功</th><th scope="col">大功</th><th scope="col">警告</th><th scope="col">小過</th><th scope="col">大過</th><th scope="col">記錄人</th><th scope="col">事由</th></tr>';
+                                                        let NameList = res;
+                                                        console.log(data[0].length);
+                                                        for (var i = 0; i < data[0].length; i++) {
+                                                            document.getElementById("exportTable").innerHTML += '<tr><td>' + data[2][i] + '</td><td>' + data[0][i] + '</td><td>' + data[4][i][0] + '</td><td>' + data[4][i][1] + '</td><td>' + data[4][i][2] + '</td><td>' + data[4][i][3] + '</td><td>' + data[4][i][4] + '</td><td>' + data[4][i][5] + '</td><td>' + NameList['woker'][data[1][i]] + '</td><td>' + data[3][i] + '</td></tr></table>';
+                                                            //console.log(data[0][i]);
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } catch (error) {
+                                        alert(error.message);
+                                    }
                                 }
                             }
                             // 查詢按鈕結束
+
                             //上傳按鈕:按下上傳後跳轉至../jump/uploadBlockchain
                             //$("#uploadBCBtn").click(async() => {
                             async function uploadToBlockchain() {
@@ -360,6 +457,7 @@ $pdo = null;
                                 var select = document.getElementById("searchSelect"); //定義select，方便之後取值
                                 var option = select.options[select.selectedIndex].value; //將option的值存起來
 
+                                let ContractAddress = '0xd153Eb4Df39E0cC04198425e75F67AaeE611985F';
                                 Contract = await new web3.eth.Contract(abi, ContractAddress);
                                 //console.log(123);
                                 var accounts = await window.ethereum.request({
@@ -386,8 +484,9 @@ $pdo = null;
                                             let Hours = nowTime.getHours();
                                             let Minutes = nowTime.getMinutes();
                                             let Seconds = nowTime.getSeconds();
-                                            let now = year+'-'+month+'-'+day+' '+Hours+':'+Minutes+':'+Seconds;
+                                            let now = year + '-' + month + '-' + day + ' ' + Hours + ':' + Minutes + ':' + Seconds;
                                             console.log(now);
+
                                             let transactionTime = [];
                                             let oId = [];
                                             let pId = [];
@@ -407,7 +506,9 @@ $pdo = null;
                                                 sId[i] = res[i].sId;
                                             }
                                             try {
-                                                await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user}).then(function(data){
+                                                await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({
+                                                    from: user
+                                                }).then(function(data) {
                                                     let blockId = data.blockNumber;
                                                     alert("成功上鏈");
                                                     console.log(blockId);
@@ -424,7 +525,61 @@ $pdo = null;
                                                         },
                                                         success: function() {
                                                             console.log("成功紀錄");
-                                                        },error: function (error) {
+                                                        },
+                                                        error: function(error) {
+                                                            console.log('error; ' + JSON.stringify(error));
+                                                        }
+                                                    });
+
+                                                });
+                                            } catch (error) {
+                                                console.log(error);
+                                                alert(error.message);
+                                            }
+                                        } else if (option == 2) {
+                                            var nowTime = new Date();
+                                            let year = nowTime.getFullYear();
+                                            let month = nowTime.getMonth() + 1;
+                                            let day = nowTime.getDate();
+                                            let Hours = nowTime.getHours();
+                                            let Minutes = nowTime.getMinutes();
+                                            let Seconds = nowTime.getSeconds();
+                                            let now = year + '-' + month + '-' + day + ' ' + Hours + ':' + Minutes + ':' + Seconds;
+                                            console.log(now);
+
+                                            let transactionTime = [];
+                                            let pId = [];
+                                            let sId = [];
+                                            let amount = [];
+                                            let oId = [];
+                                            for (let i = 0; i < rescount; ++i){
+                                                transactionTime[i] = res[i].transactionTime;
+                                                pId[i] = String(res[i].pId);
+                                                sId[i] = res[i].sId;
+                                                amount[i] = res[i].amount;
+                                                oId[i] = String(res[i].oId);
+                                            }
+                                            try {
+                                                await Contract.methods.addUselogs(transactionTime, pId, sId, amount, oId, now).send({
+                                                    from: user
+                                                }).then(function(data) {
+                                                    let blockId = data.blockNumber;
+                                                    alert("成功上鏈");
+                                                    console.log(blockId);
+                                                    $.ajax({
+                                                        url: '../jump/upBlockchainLog.php',
+                                                        method: 'POST',
+                                                        dataType: 'json',
+                                                        data: {
+                                                            "act": "postsomething",
+                                                            "option": option,
+                                                            "blockNum": blockId,
+                                                            "time": now
+                                                        },
+                                                        success: function() {
+                                                            console.log("成功紀錄");
+                                                        },
+                                                        error: function(error) {
                                                             console.log('error; ' + JSON.stringify(error));
                                                         }
                                                     });
@@ -433,11 +588,68 @@ $pdo = null;
                                                 console.log(error);
                                                 alert(error.message);
                                             }
-                                        } else if (option == 2) {
-
                                         } else if (option == 3) {
+                                            var nowTime = new Date();
+                                            let year = nowTime.getFullYear();
+                                            let month = nowTime.getMonth() + 1;
+                                            let day = nowTime.getDate();
+                                            let Hours = nowTime.getHours();
+                                            let Minutes = nowTime.getMinutes();
+                                            let Seconds = nowTime.getSeconds();
+                                            let now = year + '-' + month + '-' + day + ' ' + Hours + ':' + Minutes + ':' + Seconds;
+                                            console.log(now);
 
+                                            let updateTime = [];
+                                            let wAccount = [];
+                                            let sId = [];
+                                            let reason = [];
+                                            let rewardsArr = [];
+                                            for (let i = 0; i < rescount; ++i) {
+                                                updateTime[i] = res[i].updateTime;
+                                                wAccount[i] = res[i].wAccount;
+                                                sId[i] = res[i].sId;
+                                                reason[i] = res[i].reason;
+                                                var temp = [];
+                                                temp[0] = res[i].Commendation;
+                                                temp[1] = res[i].MinorMerit;
+                                                temp[2] = res[i].MajorMerit;
+                                                temp[3] = res[i].Admonition;
+                                                temp[4] = res[i].MinorDemerit;
+                                                temp[5] = res[i].MajorDemerit;
+                                                rewardsArr[i] = temp;
+                                            }
+                                            try { //更改時間 管理員帳號 學生ID 事由 獎懲陣列 上鏈時間
+                                                console.log(rewardsArr);
+                                                await Contract.methods.addRewardslogs(updateTime, wAccount, sId, reason, rewardsArr, now).send({
+                                                    from: user
+                                                }).then(function(data) {
+                                                    let blockId = data.blockNumber;
+                                                    alert("成功上鏈");
+                                                    console.log(blockId);
+                                                    $.ajax({
+                                                        url: '../jump/upBlockchainLog.php',
+                                                        method: 'POST',
+                                                        dataType: 'json',
+                                                        data: {
+                                                            "act": "postsomething",
+                                                            "option": option,
+                                                            "blockNum": blockId,
+                                                            "time": now
+                                                        },
+                                                        success: function() {
+                                                            console.log("成功紀錄");
+                                                        },
+                                                        error: function(error) {
+                                                            console.log('error; ' + JSON.stringify(error));
+                                                        }
+                                                    });
+                                                });
+                                            } catch (error) {
+                                                console.log(error);
+                                                alert(error.message);
+                                            }
                                         }
+                                        searchBlockchain();
                                     },
                                     error: function(request, status, error) {
                                         console.log(request.responseText);
@@ -455,9 +667,9 @@ $pdo = null;
     //var provider = 'https://goerli.infura.io/v3/687379e0e2b54760bd49b3b188511986';
     //var web3Provider = new Web3.providers.HttpProvider(provider);
     //var web3 = new Web3(web3Provider);
-    var web3 = new Web3(web3.currentProvider);
+    let web3 = new Web3(web3.currentProvider);
     let Contract;
-    var ContractAddress = '0x8B0570D411A507E14242e6282010223f66e84d3a';
+    let ContractAddress = '0xd153Eb4Df39E0cC04198425e75F67AaeE611985F';
 
     //Contract = new web3.eth.Contract(abi, ContractAddress);
     //var nowTime = new Date();
@@ -466,8 +678,22 @@ $pdo = null;
     //let day = nowTime.getDate();
     function sleep(waitMsec) {
         var startMsec = new Date();
-        
+
         while (new Date() - startMsec < waitMsec);
+    }
+
+    function getNowTime() {
+        let Time;
+        var nowTime = new Date();
+        let year = nowTime.getFullYear();
+        let month = nowTime.getMonth() + 1;
+        let day = nowTime.getDate();
+        let Hours = nowTime.getHours();
+        let Minutes = nowTime.getMinutes();
+        let Seconds = nowTime.getSeconds();
+
+        let Time = year + '-' + month + '-' + day + ' ' + Hours + ':' + Minutes + ':' + Seconds;
+        return Time;
     }
 </script>
 

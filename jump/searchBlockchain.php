@@ -12,38 +12,19 @@ $pdo = null;
 require_once('../connectDB.php');
 $pdo = connectDB();
 
-
 //if篩選回傳
 if(isset($_POST["act"]) && $_POST["act"]=="postsomething") {
     $option = $_POST["option"];
-    if($option==1){ //1=獎品兌換紀錄
-        $sql = "SELECT `blockHeight` FROM `blockchainlogs` WHERE `type` = 1 ORDER BY `uploadTime` DESC";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userData = $userData['blockHeight'];
+
+    $sql = "SELECT `blockHeight`,`uploadTime` FROM `blockchainlogs` WHERE `type` = {$option} ORDER BY `uploadTime` DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    $output[0] = $data['blockHeight'];
+    $output[1] = $data['uploadTime'];
         
-        echo json_encode($userData,JSON_UNESCAPED_UNICODE);
-        //在這取出所有需要的值，放入陣列，編輯成json檔，回傳json檔
-    }
-    else if($option==2){//2=獎品使用紀錄
-        $sql = "SELECT * FROM `uselogs` WHERE `sId` = '$sId'";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $userData=array(); 
-        
-        echo json_encode($userData,JSON_UNESCAPED_UNICODE);
-    }
-    else if($option==3){//3=獎懲紀錄
-        $sql = "SELECT * FROM `rewardslogs` WHERE `sId` = '$sId'";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        $userData=array(); 
-        
-        echo json_encode($userData,JSON_UNESCAPED_UNICODE);
-    }
+    echo json_encode($output,JSON_UNESCAPED_UNICODE);
 }
 
 die();
 exit();//停止php
-?>
