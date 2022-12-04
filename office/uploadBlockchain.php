@@ -407,25 +407,27 @@ $pdo = null;
                                                 sId[i] = res[i].sId;
                                             }
                                             try {
-                                                let data = await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user});
-                                                let blockId = data.blockNumber;
-                                                console.log(blockId);
-                                                sleep(5000);
-                                                $.ajax({
-                                                    url: '../jump/upBlockchainLog.php',
-                                                    method: 'POST',
-                                                    dataType: 'json',
-                                                    data: {
-                                                        "act": "postsomething",
-                                                        "option": option,
-                                                        "blockNum": blockId,
-                                                        "time": now
-                                                    },
-                                                    success: function() {
-                                                        console.log("成功紀錄");
-                                                    },error: function (error) {
-                                                        console.log('error; ' + JSON.stringify(error));
-                                                    }
+                                                await Contract.methods.addBuyList(transactionTime, oId, pId, price, amount, point, sId, now).send({from: user}).then(function(data){
+                                                    let blockId = data.blockNumber;
+                                                    alert("成功上鏈");
+                                                    console.log(blockId);
+                                                    //sleep(5000);
+                                                    $.ajax({
+                                                        url: '../jump/upBlockchainLog.php',
+                                                        method: 'POST',
+                                                        dataType: 'json',
+                                                        data: {
+                                                            "act": "postsomething",
+                                                            "option": option,
+                                                            "blockNum": blockId,
+                                                            "time": now
+                                                        },
+                                                        success: function() {
+                                                            console.log("成功紀錄");
+                                                        },error: function (error) {
+                                                            console.log('error; ' + JSON.stringify(error));
+                                                        }
+                                                    });
                                                 });
                                             } catch (error) {
                                                 console.log(error);
